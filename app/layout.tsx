@@ -8,6 +8,7 @@ import { SEO } from "./_components/SEO";
 import { Navbar } from "./_components/Navbar";
 import { Footer } from "./_components/Footer";
 import { CookieConsent } from "./_components/CookieConsent";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -106,6 +107,7 @@ export default function RootLayout({
               <main className="flex-grow">{children}</main>
               <Footer />
               <CookieConsent />
+              <Toaster />
             </ThemeProvider>
           </ConvexClientProvider>
         </body>
