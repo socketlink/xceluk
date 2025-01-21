@@ -24,7 +24,7 @@ export function Footer() {
             <FooterLink href="/terms-and-conditions">Terms</FooterLink>
             <FooterLink href="/privacy">Privacy</FooterLink>
             <a
-              href="mailto:support@xceltutors.com"
+              href="mailto:hello@xceltutors.com"
               className="hover:text-primary-foreground/80 transition-colors flex items-center"
             >
               <Mail size={14} className="mr-1" />
