@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { ChatTab } from "./ChatTab";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,6 +20,7 @@ export function Navbar() {
             <NavLink href="/find-a-tutor">Find a Tutor</NavLink>
             <NavLink href="/about">About</NavLink>
             <NavLink href="/blog">Blog</NavLink>
+            <ChatTab />
           </div>
           <div className="hidden md:flex space-x-2">
             <Button
@@ -46,6 +48,7 @@ export function Navbar() {
             <NavLink href="/find-a-tutor">Find a Tutor</NavLink>
             <NavLink href="/about">About</NavLink>
             <NavLink href="/blog">Blog</NavLink>
+            <ChatTab />
             <NavLink href="/sign-in">Sign In</NavLink>
             <NavLink href="/sign-up">Sign Up</NavLink>
           </div>
