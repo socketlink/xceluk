@@ -558,7 +558,7 @@ export default function PrivacyPolicyPage() {
           paragraph: "Customer Support Team",
         },
         {
-          paragraph: "Email: support@xceltutors.com",
+          paragraph: "Email: hello@xceltutors.com",
         },
         {
           paragraph:
@@ -575,7 +575,7 @@ export default function PrivacyPolicyPage() {
       content: [
         {
           paragraph:
-            "Based on the applicable laws of your country, you may have the right to request access to the personal information we collect from you, change that information, or delete it in some circumstances. To request to review, update, or delete your personal information, please visit our support portal or contact us directly at support@xceltutors.com.",
+            "Based on the applicable laws of your country, you may have the right to request access to the personal information we collect from you, change that information, or delete it in some circumstances. To request to review, update, or delete your personal information, please visit our support portal or contact us directly at hello@xceltutors.com.",
         },
       ],
     },
