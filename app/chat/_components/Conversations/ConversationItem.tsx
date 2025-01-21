@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { Conversation, User } from "../../mocks";
+import type { Conversation } from "../../mocks";
 import { format } from "date-fns";
 
 interface ConversationItemProps {
@@ -16,9 +16,7 @@ export function ConversationItem({
   isSelected,
   onSelect,
 }: ConversationItemProps) {
-  const otherParticipant = conversation.participants.find(
-    (p: User) => p.role !== "you",
-  ) as User;
+  const otherParticipant = conversation.toUser;
 
   return (
     <motion.div
@@ -28,7 +26,7 @@ export function ConversationItem({
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
       className={cn(
-        "flex items-center space-x-4 p-4 cursor-pointer hover:bg-accent transition-colors duration-200",
+        "flex items-center space-x-3 px-3 py-2 cursor-pointer hover:bg-accent transition-colors duration-200",
         isSelected && "bg-accent",
       )}
       onClick={onSelect}

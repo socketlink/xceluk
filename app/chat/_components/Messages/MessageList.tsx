@@ -23,14 +23,14 @@ export function MessageList({
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (scrollAreaRef.current && !isLoading) {
+    if (scrollAreaRef.current) {
       const scrollArea = scrollAreaRef.current;
       scrollArea.scrollTop = scrollArea.scrollHeight;
     }
   }, [messages, isLoading]);
 
   return (
-    <ScrollArea className="flex-1 p-4 h-[calc(100%-8rem)]" ref={scrollAreaRef}>
+    <ScrollArea className="flex-1 px-4 py-2 min-h-0" ref={scrollAreaRef}>
       <AnimatePresence mode="wait">
         {isLoading ? (
           <motion.div
@@ -39,6 +39,7 @@ export function MessageList({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
+            className="space-y-4"
           >
             {Array(5)
               .fill(0)
@@ -55,6 +56,7 @@ export function MessageList({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
+            className="space-y-2"
           >
             {messages.map((msg, index) => {
               const sender =

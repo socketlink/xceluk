@@ -1,4 +1,4 @@
-import { format, subDays, subHours, subMinutes } from "date-fns";
+import { format, subHours, subDays, subMinutes } from "date-fns";
 
 // Types
 export interface User {
@@ -20,7 +20,8 @@ export interface Message {
 
 export interface Conversation {
   id: string;
-  participants: User[];
+  fromUser: User;
+  toUser: User;
   lastMessage: Message;
   unreadCount: number;
 }
@@ -202,8 +203,7 @@ export const messages: Message[] = [
     id: "m16",
     conversationId: "c4",
     senderId: "bob",
-    content:
-      "I was wondering if we could focus on calculus this time. I have an exam coming up.",
+    content: "Hello! I have a question about our upcoming group study session.",
     timestamp: format(subHours(new Date(), 3), "yyyy-MM-dd HH:mm:ss"),
     reactions: [],
     isRead: false,
@@ -224,10 +224,8 @@ export const messages: Message[] = [
 export const conversations: Conversation[] = [
   {
     id: "c1",
-    participants: [
-      users.find((u) => u.id === "you")!,
-      users.find((u) => u.id === "john")!,
-    ],
+    fromUser: users.find((u) => u.id === "you")!,
+    toUser: users.find((u) => u.id === "john")!,
     lastMessage: messages.find(
       (m) => m.conversationId === "c1" && m.id === "m11",
     )!,
@@ -236,10 +234,8 @@ export const conversations: Conversation[] = [
   },
   {
     id: "c2",
-    participants: [
-      users.find((u) => u.id === "you")!,
-      users.find((u) => u.id === "jane")!,
-    ],
+    fromUser: users.find((u) => u.id === "you")!,
+    toUser: users.find((u) => u.id === "jane")!,
     lastMessage: messages.find(
       (m) => m.conversationId === "c2" && m.id === "m13",
     )!,
@@ -248,10 +244,8 @@ export const conversations: Conversation[] = [
   },
   {
     id: "c3",
-    participants: [
-      users.find((u) => u.id === "you")!,
-      users.find((u) => u.id === "alice")!,
-    ],
+    fromUser: users.find((u) => u.id === "you")!,
+    toUser: users.find((u) => u.id === "alice")!,
     lastMessage: messages.find(
       (m) => m.conversationId === "c3" && m.id === "m15",
     )!,
@@ -260,14 +254,71 @@ export const conversations: Conversation[] = [
   },
   {
     id: "c4",
-    participants: [
-      users.find((u) => u.id === "you")!,
-      users.find((u) => u.id === "bob")!,
-    ],
+    fromUser: users.find((u) => u.id === "you")!,
+    toUser: users.find((u) => u.id === "bob")!,
     lastMessage: messages.find(
       (m) => m.conversationId === "c4" && m.id === "m17",
     )!,
     unreadCount: messages.filter((m) => m.conversationId === "c4" && !m.isRead)
       .length,
+  },
+];
+
+// New constants and types for bookings
+export const BOOKING_STATUS = {
+  AWAITING_TUTOR_CONFIRMATION: "AWAITING_TUTOR_CONFIRMATION",
+  AWAITING_STUDENT_CONFIRMATION: "AWAITING_STUDENT_CONFIRMATION",
+  SCHEDULED: "SCHEDULED",
+  COMPLETED: "COMPLETED",
+  CANCELLED: "CANCELLED",
+  // Payment statuses
+  AWAITING_PAYMENT: "AWAITING_PAYMENT",
+  PAYMENT_FAILED: "PAYMENT_FAILED",
+  AWAITING_REFUND: "AWAITING_REFUND",
+  REFUND_FAILED: "REFUND_FAILED",
+  REFUNDED: "REFUNDED",
+} as const;
+
+export type BookingStatus =
+  (typeof BOOKING_STATUS)[keyof typeof BOOKING_STATUS];
+
+export interface Booking {
+  id: string;
+  subject: string;
+  startTimeUtc: string;
+  type: "Free Meeting" | "Paid Lesson";
+  status: BookingStatus;
+  fromUserId: string;
+  toUserId: string;
+}
+
+// Mock bookings data
+export const bookings: Booking[] = [
+  {
+    id: "b1",
+    subject: "Mathematics",
+    startTimeUtc: format(subHours(new Date(), 2), "yyyy-MM-dd HH:mm:ss"),
+    type: "Free Meeting",
+    status: BOOKING_STATUS.AWAITING_TUTOR_CONFIRMATION,
+    fromUserId: "you",
+    toUserId: "john",
+  },
+  {
+    id: "b2",
+    subject: "Physics",
+    startTimeUtc: format(subDays(new Date(), 1), "yyyy-MM-dd HH:mm:ss"),
+    type: "Paid Lesson",
+    status: BOOKING_STATUS.COMPLETED,
+    fromUserId: "you",
+    toUserId: "jane",
+  },
+  {
+    id: "b3",
+    subject: "Chemistry",
+    startTimeUtc: format(subHours(new Date(), 5), "yyyy-MM-dd HH:mm:ss"),
+    type: "Paid Lesson",
+    status: BOOKING_STATUS.SCHEDULED,
+    fromUserId: "you",
+    toUserId: "alice",
   },
 ];

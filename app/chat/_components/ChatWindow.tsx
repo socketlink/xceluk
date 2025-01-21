@@ -4,37 +4,43 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { MessageList } from "./Messages/MessageList";
 import { MessageInput } from "./Messages/MessageInput";
-import { messages as initialMessages, users, type Message } from "../mocks";
+import {
+  messages as initialMessages,
+  conversations,
+  type Message,
+} from "../mocks";
 import { generateUniqueId } from "../utils";
 
 interface ChatWindowProps {
   selectedConversation: string | null;
   onBack: () => void;
   isMobileView: boolean;
+  currentUserId: string;
 }
 
 export function ChatWindow({
   selectedConversation,
   onBack,
   isMobileView,
+  currentUserId,
 }: ChatWindowProps) {
   const [chatMessages, setChatMessages] = useState<Message[]>(initialMessages);
   const [isLoading, setIsLoading] = useState(true);
-  const currentUserId = "you"; // Assuming the current user's ID is always "you"
 
   useEffect(() => {
     if (selectedConversation) {
       setIsLoading(true);
       const timer = setTimeout(() => {
-        setChatMessages(
-          initialMessages.filter(
-            (msg) => msg.conversationId === selectedConversation,
-          ),
+        const filteredMessages = initialMessages.filter(
+          (msg) => msg.conversationId === selectedConversation,
         );
+        setChatMessages(filteredMessages);
         setIsLoading(false);
       }, 1500);
 
       return () => clearTimeout(timer);
+    } else {
+      setChatMessages([]);
     }
   }, [selectedConversation]);
 
@@ -85,24 +91,13 @@ export function ChatWindow({
   };
 
   if (!selectedConversation) {
-    return (
-      <div className="hidden md:flex h-full items-center justify-center bg-background">
-        <p className="text-muted-foreground text-center">
-          Select a conversation to start chatting
-        </p>
-      </div>
-    );
+    return null;
   }
 
-  const conversation = users.find(
-    (user) =>
-      user.id !== currentUserId &&
-      initialMessages.some(
-        (msg) =>
-          msg.conversationId === selectedConversation &&
-          msg.senderId === user.id,
-      ),
+  const currentConversation = conversations.find(
+    (conv) => conv.id === selectedConversation,
   );
+  const otherUser = currentConversation?.toUser;
 
   return (
     <motion.div
@@ -110,9 +105,9 @@ export function ChatWindow({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="flex flex-col h-full bg-background"
+      className="flex flex-col w-full h-full bg-background rounded-l-lg"
     >
-      <div className="p-4 border-b border-border flex items-center">
+      <div className="p-4 border-b border-border flex items-center sticky top-0 bg-background z-10">
         {isMobileView && (
           <Button variant="ghost" size="icon" onClick={onBack} className="mr-2">
             <ArrowLeft className="h-4 w-4" />
@@ -120,18 +115,20 @@ export function ChatWindow({
         )}
         <h2 className="text-lg font-semibold">
           {selectedConversation
-            ? `Chat with ${conversation?.name}`
+            ? `Chat with ${otherUser?.name}`
             : "Select a conversation"}
         </h2>
       </div>
-      <MessageList
-        messages={chatMessages}
-        isLoading={isLoading}
-        onAddReaction={handleAddReaction}
-        onRemoveReaction={handleRemoveReaction}
-        currentUserId={currentUserId}
-      />
-      <MessageInput onSendMessage={handleSendMessage} />
+      <div className="flex-1 flex flex-col min-h-0">
+        <MessageList
+          messages={chatMessages}
+          isLoading={isLoading}
+          onAddReaction={handleAddReaction}
+          onRemoveReaction={handleRemoveReaction}
+          currentUserId={currentUserId}
+        />
+        <MessageInput onSendMessage={handleSendMessage} />
+      </div>
     </motion.div>
   );
 }

@@ -7,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function ChatPage() {
-  return <ChatLayout />;
+  return (
+    <div className="">
+      <ChatLayout />
+    </div>
+  );
 }

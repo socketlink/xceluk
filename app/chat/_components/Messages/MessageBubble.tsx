@@ -60,31 +60,31 @@ export function MessageBubble({
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       className={cn(
-        "flex mb-4",
+        "flex mb-2",
         isOwnMessage ? "justify-end" : "justify-start",
       )}
     >
       <div
         className={cn(
-          "flex items-end",
+          "flex items-end max-w-[85%]",
           isOwnMessage ? "flex-row-reverse" : "flex-row",
         )}
       >
-        <Avatar className="w-8 h-8">
+        <Avatar className="w-6 h-6 mb-1">
           <AvatarImage src={senderAvatar} alt={senderName} />
           <AvatarFallback>{senderName[0]}</AvatarFallback>
         </Avatar>
         <div
           className={cn(
-            "max-w-md px-4 py-2 rounded-lg relative group ml-2",
+            "mx-2 px-3 py-2 rounded-lg relative group",
             isOwnMessage
               ? "bg-primary text-primary-foreground"
               : "bg-secondary text-secondary-foreground",
           )}
         >
-          <p className="text-sm font-semibold mb-1">{senderName}</p>
-          <p>{message.content}</p>
-          <p className="text-xs mt-1 opacity-70">
+          <p className="text-xs font-medium mb-1 opacity-70">{senderName}</p>
+          <p className="text-sm break-words">{message.content}</p>
+          <p className="text-[10px] mt-1 opacity-50">
             {format(new Date(message.timestamp), "HH:mm")}
           </p>
 
@@ -93,7 +93,7 @@ export function MessageBubble({
               <Button
                 variant="ghost"
                 size="sm"
-                className="absolute bottom-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute -right-8 bottom-0 opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0"
               >
                 <Smile className="h-4 w-4" />
               </Button>
@@ -105,7 +105,7 @@ export function MessageBubble({
                     key={emoji}
                     variant="outline"
                     size="sm"
-                    className="p-1 hover:bg-accent"
+                    className="p-1 h-7 w-7 hover:bg-accent"
                     onClick={() => handleReactionClick(emoji)}
                   >
                     {emoji}
@@ -153,7 +153,7 @@ export function MessageBubble({
                           variant="ghost"
                           size="sm"
                           className={cn(
-                            "text-xs rounded-full px-2 py-1 hover:bg-accent group",
+                            "text-xs rounded-full px-1.5 py-0.5 h-5 hover:bg-accent group",
                             hasReacted ? "bg-primary/20" : "bg-secondary/40",
                           )}
                         >
@@ -172,13 +172,13 @@ export function MessageBubble({
                                 className="flex items-center justify-between"
                               >
                                 <div className="flex items-center gap-2">
-                                  <Avatar className="h-6 w-6">
+                                  <Avatar className="h-5 w-5">
                                     <AvatarImage src={user?.avatar} />
                                     <AvatarFallback>
                                       {user?.name[0]}
                                     </AvatarFallback>
                                   </Avatar>
-                                  <span className="text-sm">
+                                  <span className="text-xs">
                                     {user?.id === currentUserId
                                       ? "You"
                                       : user?.name}
@@ -188,7 +188,7 @@ export function MessageBubble({
                                   <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="h-6 px-2 text-xs hover:bg-destructive/90 hover:text-destructive-foreground"
+                                    className="h-5 px-2 text-xs hover:bg-destructive/90 hover:text-destructive-foreground"
                                     onClick={() => {
                                       handleReactionClick(emoji);
                                       setOpenReactions({});

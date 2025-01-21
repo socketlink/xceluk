@@ -10,6 +10,7 @@ import { ConversationSkeleton } from "./ConversationSkeleton";
 interface ConversationListProps {
   selectedConversation: string | null;
   onSelectConversation: (id: string) => void;
+  currentUserId: string;
 }
 
 export function ConversationList({
@@ -25,9 +26,7 @@ export function ConversationList({
   }, []);
 
   const filteredConversations = conversations.filter((conversation) =>
-    conversation.participants.some((participant) =>
-      participant.name.toLowerCase().includes(searchQuery.toLowerCase()),
-    ),
+    conversation.toUser.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
